@@ -32,7 +32,9 @@
     "drawille": "^1.0.0",
     "drawille-canvas": "^0.1.0",
     "get-folder-size": "^0.1.0",
-    "jsdom": "^1.0.0-pre.7"
+    "jsdom": "^1.0.0-pre.7",
+    "q": "^1.0.1",
+    "q-io": "^1.11.5"
   },
   "devDependencies": {
     "gulp": "^3.8.7",

@@ -30,6 +30,15 @@ var FolderAnalyser = require('./lib/folderAnalyser');
 var startPath = '/Users/alexis/Code/cli-daisydisk';
 
 var folder = new FolderAnalyser(startPath);
-//console.log(folder);
-folder.analyse();
-//console.log(folder);
+folder.analyse().then(function(){
+    console.log(folder);
+},function (error) {
+    console.log(error);
+});
+
+var displayFolder = function () {
+    console.log(folder);
+};
+
+setTimeout(displayFolder, 2000);
+

@@ -26,75 +26,10 @@
 //     }
 // });
 
-var fs    = require('fs');
-var path  = require('path');
-var async = require('async');
-
-var flatfolders = {};
+var FolderAnalyser = require('./lib/folderAnalyser');
 var startPath = '/Users/alexis/Code/cli-daisydisk';
-var level = 2;
 
-var getFilesSize = function(folderPath, level) {
-    fs.readdir(folderPath, function (err, files) {
-        if (err) {
-            throw err;
-        }
-        files.map(function (file) {
-            return path.join(folderPath, file);
-        }).forEach(function (file) {
-            var statFile =  fs.statSync(file);
-            if (statFile.isFile()) {
-                flatfolders[level][folderPath].totalSize += statFile.size;
-            }
-        });
-    });
-};
-
-function readSizeRecursive(item, reclevel, cb) {
-    fs.lstat(item, function(err, stats) {
-
-        if (!err && stats.isDirectory()) {
-            if (flatfolders[reclevel] === undefined) {
-                flatfolders[reclevel] = {};
-            }
-            flatfolders[reclevel][item] = {
-                totalSize: 0
-            };
-            if (reclevel > 1) {
-                getFilesSize(item, reclevel);
-            }
-            fs.readdir(item, function(err, list) {
-                if (err) return cb(err);
-
-                async.forEach(
-                list,
-                function(diritem, callback) {
-                    var nextLevel = (reclevel -1);
-                    if (nextLevel) {
-                        readSizeRecursive(path.join(item, diritem), nextLevel, function(err) {
-                            callback(err);
-                        }); 
-                    } else {
-                        callback(err);
-                    }
-                },  
-                function(err) {
-                    cb(err);
-                }   
-                );  
-            }); 
-        }   
-        else {
-            cb(err);
-        }   
-    }); 
-}
-
-readSizeRecursive(startPath, level, function(err) {
-    if (err) { 
-        console.log('ERREUR : ' + err);
-    }
-  console.log('première étpae : la hiérarchie des dossiers');
-  console.log(flatfolders);
-});
-
+var folder = new FolderAnalyser(startPath);
+//console.log(folder);
+folder.analyse();
+//console.log(folder);

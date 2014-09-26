@@ -23,8 +23,10 @@
   },
   "homepage": "https://github.com/marmelab/cli-daisydisk",
   "dependencies": {
+    "bresenham": "0.0.3",
     "d3": "^3.4.11",
     "drawille": "^1.0.0",
+    "drawille-canvas": "^0.1.0",
     "jsdom": "^1.0.0-pre.7"
   },
   "devDependencies": {

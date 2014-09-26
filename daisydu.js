@@ -36,9 +36,3 @@ folder.analyse().then(function(){
     console.log(error);
 });
 
-// var displayFolder = function () {
-//     console.log(folder);
-// };
-
-// setTimeout(displayFolder, 2000);
-

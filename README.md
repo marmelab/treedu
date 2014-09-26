@@ -10,4 +10,4 @@ It's also possible to install the script in global:
 
     npm install -g 
 
-In this case, you can run the command `daisydu from any directory.
+In this case, you can run the command `daisydu`  from any directory.

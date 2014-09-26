@@ -27,18 +27,18 @@
 // });
 
 var FolderAnalyser = require('./lib/folderAnalyser');
-var startPath = '/Users/alexis/Code/cli-daisydisk';
+var startPath = './';
 
 var folder = new FolderAnalyser(startPath);
 folder.analyse().then(function(){
-    console.log(folder);
+    console.log('This folder (' + folder.absolutePath + ') size is ' + (folder.totalSize / 1024 / 1024).toFixed(2) + ' Mb');
 },function (error) {
     console.log(error);
 });
 
-var displayFolder = function () {
-    console.log(folder);
-};
+// var displayFolder = function () {
+//     console.log(folder);
+// };
 
-setTimeout(displayFolder, 2000);
+// setTimeout(displayFolder, 2000);
 

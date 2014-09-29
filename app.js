@@ -9,6 +9,7 @@
 
 var App = function() {
     var d3 = require('./lib/d3Canvas'),
+    fs = require('q-io/fs'),
     Canvas = require('drawille-canvas'),
     FolderAnalyzer = require('./lib/folderAnalyzer'),
     blessed = require('blessed'),
@@ -35,7 +36,8 @@ var App = function() {
 
     var screen,
          loadedTheme,
-         activeFolder ='';
+         currentPath,
+         activeFolder;
 
 
     var size = {
@@ -124,7 +126,7 @@ var App = function() {
         });
         var listToDisplay = [];
         folderList.forEach(function(folder){
-            listToDisplay.push( folder.path.replace(cli.path + '/', ' * ') + ' (' + (folder.size / 1024 / 1024).toFixed(2) + ' Mb)' );
+            listToDisplay.push( folder.path.replace(currentPath + '/', ' * ') + ' (' + (folder.size / 1024 / 1024).toFixed(2) + ' Mb)' );
         });
 
         return listToDisplay;
@@ -133,6 +135,11 @@ var App = function() {
     return {
 
         init: function() {
+
+            currentPath = cli.path;
+            if (currentPath === './') {
+                currentPath = fs.absolute(cli.path);
+            }
 
             var theme;
             if (typeof process.theme !== 'undefined') {
@@ -162,7 +169,7 @@ var App = function() {
                 tags: true,
                 border: loadedTheme.chart.border
             });
-            graph.setLabel(' Current path: ' + cli.path + ' ');
+            graph.setLabel(' Current path: ' + currentPath + ' ');
             screen.append(graph);
 
             var folderList = blessed.list({
@@ -187,13 +194,13 @@ var App = function() {
             screen.render();
 
             // TODO launch something while folder size is compute
-            var folder = new FolderAnalyzer(cli.path);
+            var folder = new FolderAnalyzer(currentPath);
             folder.analyse().then(function(){
                 folderList.setItems(getFolderListBySize(folder.folders));
                 size.pixel.width = (graph.width - 3) * 2;
                 size.pixel.height = (graph.height - 2) * 4;
                 var currentCanvas = new Canvas(size.pixel.width, size.pixel.height);
-                graph.setContent(drawChart(folder.getTreemapDatas(), currentCanvas));
+                //graph.setContent(drawChart(folder.getTreemapDatas(), currentCanvas));
                 folderList.focus();
                 screen.render();
             },function (error) {

@@ -32,12 +32,10 @@ var App = function() {
     .version(VERSION)
     .parse(process.argv);
 
-    /**
-     * Instance of blessed screen, and the charts object
-     */
+
     var screen,
          loadedTheme,
-         activeFolder;
+         activeFolder ='';
 
 
     var size = {
@@ -51,7 +49,6 @@ var App = function() {
             }
         };
 
-    // Private functions
 
     var drawHeader = function() {
         var headerText, headerTextNoTags;
@@ -94,11 +91,6 @@ var App = function() {
         screen.append(footerRight);
     };
 
-    /**
-     * This draws a chart
-     * @param  {array} the dats of folder analysed.
-     * @return {string}       The text output to draw.
-     */
      var drawChart = function(treemapData, currentCanvas) {
 
         var treemap = d3.layout.treemap()
@@ -124,7 +116,20 @@ var App = function() {
       return currentCanvas._canvas.frame();
   };
 
-    // Public function (just the entry point)
+    var getFolderListBySize = function (folderList) {
+        folderList.sort(function (a, b) {
+        if (a.size > b.size) return -1;
+        if (a.size < b.size) return 1;
+        return 0;
+        });
+        var listToDisplay = [];
+        folderList.forEach(function(folder){
+            listToDisplay.push( folder.path.replace(cli.path + '/', ' * ') + ' (' + (folder.size / 1024 / 1024).toFixed(2) + ' Mb)' );
+        });
+
+        return listToDisplay;
+    };
+
     return {
 
         init: function() {
@@ -157,22 +162,39 @@ var App = function() {
                 tags: true,
                 border: loadedTheme.chart.border
             });
-            graph.setLabel(cli.path);
-
+            graph.setLabel(' Current path: ' + cli.path + ' ');
             screen.append(graph);
+
+            var folderList = blessed.list({
+                top: 2,
+                left: '70%',
+                width: screen.width - graph.width,
+                height: graph.height,
+                keys: true,
+                mouse: true,
+                fg: loadedTheme.table.fg,
+                tags: true,
+                border: loadedTheme.table.border
+            });
+            folderList.setLabel(' Folders list ');
+            screen.append(folderList);
 
             screen.key(['escape', 'q', 'C-c'], function(ch, key) {
               return process.exit(0);
             });
-            // Render the screen.
+
+            // Render an empty screen.
             screen.render();
 
+            // TODO launch something while folder size is compute
             var folder = new FolderAnalyzer(cli.path);
             folder.analyse().then(function(){
+                folderList.setItems(getFolderListBySize(folder.folders));
                 size.pixel.width = (graph.width - 3) * 2;
                 size.pixel.height = (graph.height - 2) * 4;
                 var currentCanvas = new Canvas(size.pixel.width, size.pixel.height);
                 graph.setContent(drawChart(folder.getTreemapDatas(), currentCanvas));
+                folderList.focus();
                 screen.render();
             },function (error) {
                 graph.setContent(error);

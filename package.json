@@ -1,6 +1,6 @@
 {
   "name": "cli-daisydisk",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Analyze disk usage, as du, but graphically as treemap, in terminal. The project use D3.js and Node.js",
   "main": "app.js",
   "preferGlobal": true,
@@ -29,16 +29,13 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "async": "^0.9.0",
     "blessed": "0.0.37",
     "bresenham": "0.0.3",
     "commander": "^2.3.0",
     "d3": "^3.4.11",
-    "drawille": "^1.0.0",
     "drawille-canvas": "^0.1.0",
     "get-folder-size": "^0.1.0",
     "glob": "^4.0.6",
-    "jsdom": "^1.0.0-pre.7",
     "q": "^1.0.1",
     "q-io": "^1.11.5"
   },

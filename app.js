@@ -36,12 +36,20 @@ var App = function() {
      * Instance of blessed screen, and the charts object
      */
     var screen,
-         loadedTheme;
+         loadedTheme,
+         activeFolder;
 
 
-    var width = 120;
-    var height = 120;
-    var context = new Canvas(width, height);
+    var size = {
+            pixel: {
+                width: 0,
+                height: 0
+            },
+            character: {
+                width: 0,
+                height: 0
+            }
+        };
 
     // Private functions
 
@@ -91,27 +99,29 @@ var App = function() {
      * @param  {array} the dats of folder analysed.
      * @return {string}       The text output to draw.
      */
-     var drawChart = function(treemapData) {
+     var drawChart = function(treemapData, currentCanvas) {
 
         var treemap = d3.layout.treemap()
-        .children(function (d) {return d.children})
-        .size([width,height])
-        .value(function (d) {return d.size})
+        .children(function (d) {return d.children;})
+        .size([size.pixel.width,size.pixel.height])
+        .value(function (d) {return d.size;})
         .mode('squarify')
         .nodes(treemapData);
 
-        function position(d, i) {
-          context.fillRect(~~d.x, ~~d.y,
-              ~~Math.max(0, d.dx),
-              ~~Math.max(0, d.dy));
-          context.clearRect(~~d.x + 1, ~~d.y + 1,
-              ~~Math.max(0, d.dx) - 3,
-              ~~Math.max(0, d.dy) -3);
+        function position(d) {
+          currentCanvas.fillRect(d.x, d.y,
+              Math.max(0, d.dx),
+              Math.max(0, d.dy));
+          if (d.name !== activeFolder) {
+              currentCanvas.clearRect(d.x + 1, d.y + 1,
+                  Math.max(0, d.dx) - 3,
+                  Math.max(0, d.dy) -3);
+          }
       }
 
       treemap.forEach(position);
 
-      return context._canvas.frame();
+      return currentCanvas._canvas.frame();
   };
 
     // Public function (just the entry point)
@@ -120,7 +130,7 @@ var App = function() {
         init: function() {
 
             var theme;
-            if (typeof process.theme != 'undefined') {
+            if (typeof process.theme !== 'undefined') {
                 theme = process.theme;
             } else {
                 theme = cli.theme;
@@ -159,7 +169,10 @@ var App = function() {
 
             var folder = new FolderAnalyzer(cli.path);
             folder.analyse().then(function(){
-                graph.setContent(drawChart(folder.getTreemapDatas()));
+                size.pixel.width = (graph.width - 3) * 2;
+                size.pixel.height = (graph.height - 2) * 4;
+                var currentCanvas = new Canvas(size.pixel.width, size.pixel.height);
+                graph.setContent(drawChart(folder.getTreemapDatas(), currentCanvas));
                 screen.render();
             },function (error) {
                 graph.setContent(error);

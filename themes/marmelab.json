@@ -1,0 +1,34 @@
+{
+    "name": "Marmelab",
+    "author": "Alexis Janvier",
+    "title": {
+        "fg": "#013adf"
+    },
+    "chart": {
+        "fg": "#eb8118",
+        "border": {
+            "type": "line",
+            "fg": "#013adf"
+        }
+    },
+    "table": {
+        "fg": "fg",
+        "items": {
+            "selected": {
+                "bg": "#013adf",
+                "fg": "bg"
+            },
+            "item": {
+                "fg": "fg",
+                "bg": "bg"
+            }
+        },
+        "border": {
+            "type": "line",
+            "fg": "#013adf"
+        }
+    },
+    "footer": {
+        "fg": "fg"
+    }
+}

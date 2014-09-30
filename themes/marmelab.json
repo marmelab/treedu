@@ -1,21 +1,21 @@
 {
-    "name": "Brew",
-    "author": "James Hall",
+    "name": "Marmelab",
+    "author": "Alexis Janvier",
     "title": {
-        "fg": "#187dc1"
+        "fg": "#013adf"
     },
     "chart": {
-        "fg": "#EB8118",
+        "fg": "#eb8118",
         "border": {
             "type": "line",
-            "fg": "#56a0d1"
+            "fg": "#013adf"
         }
     },
     "table": {
         "fg": "fg",
         "items": {
             "selected": {
-                "bg": "#56a0d1",
+                "bg": "#013adf",
                 "fg": "bg"
             },
             "item": {
@@ -25,7 +25,7 @@
         },
         "border": {
             "type": "line",
-            "fg": "#56a0d1"
+            "fg": "#013adf"
         }
     },
     "footer": {

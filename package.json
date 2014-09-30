@@ -2,9 +2,12 @@
   "name": "cli-daisydisk",
   "version": "0.0.1",
   "description": "Analyze disk usage, as df and du, but graphically as daisydisk, in terminal. The project use D3.js and Node.js",
-  "main": "index.js",
+  "main": "daisydu.js",
   "scripts": {
     "test": "make test"
+  },
+  "bin": {
+    "daisydu": "daisydu.js"
   },
   "repository": {
     "type": "git",
@@ -23,11 +26,15 @@
   },
   "homepage": "https://github.com/marmelab/cli-daisydisk",
   "dependencies": {
+    "async": "^0.9.0",
     "bresenham": "0.0.3",
     "d3": "^3.4.11",
     "drawille": "^1.0.0",
     "drawille-canvas": "^0.1.0",
-    "jsdom": "^1.0.0-pre.7"
+    "get-folder-size": "^0.1.0",
+    "jsdom": "^1.0.0-pre.7",
+    "q": "^1.0.1",
+    "q-io": "^1.11.5"
   },
   "devDependencies": {
     "gulp": "^3.8.7",

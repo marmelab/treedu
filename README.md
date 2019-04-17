@@ -9,7 +9,7 @@
 </table>
 
 
-#treedu
+# treedu
 
 Analyze disk usage, as du but graphically with [treemap](http://bl.ocks.org/mbostock/4063582), in terminal. The project use d3.js and node.js with drawille.
 
